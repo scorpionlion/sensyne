@@ -1,0 +1,1 @@
+# DEployment config to be used by k8
