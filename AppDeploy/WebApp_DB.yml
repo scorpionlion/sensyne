@@ -1,0 +1,69 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - name: webapp
+          image: webapp_web:latest
+          imagePullPolicy: Never
+          resources: {}
+          ports:
+            - containerPort: 80
+        
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          image: mcr.microsoft.com/mssql/server
+          env:
+          - name: SA_PASSWORD
+            value: "P@ssw0rd"
+          - name: ACCEPT_EULA
+            value: "Y"
+          resources: {}
+          ports:
+            - containerPort: 1433      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  selector:
+    app: db
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webappui
+spec:
+  type: LoadBalancer
+  selector:
+    app: webapp
+  ports:
+  - name: http
+    port: 8090
+    targetPort: 80
+
