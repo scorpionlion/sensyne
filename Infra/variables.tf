@@ -7,7 +7,7 @@ variable "subscription_id" {}
 variable "tenant_id" {}
 
 variable "agent_count" {
-    default = 3
+    default = 1
 }   
 
 variable "ssh_public_key" {
@@ -27,7 +27,7 @@ variable resource_group_name {
 }
 
 variable location {
-    default = "ukwest"
+    default = "westeurope"
 }
 
 variable log_analytics_workspace_name {
@@ -36,7 +36,7 @@ variable log_analytics_workspace_name {
 
 # refer https://azure.microsoft.com/global-infrastructure/services/?products=monitor for log analytics available regions
 variable log_analytics_workspace_location {
-    default = "ukwest"
+    default = "westeurope"
 }
 
 # refer https://azure.microsoft.com/pricing/details/monitor/ for log analytics pricing 

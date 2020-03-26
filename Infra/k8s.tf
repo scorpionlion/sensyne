@@ -48,7 +48,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     default_node_pool {
         name            = "agentpool"
         node_count      = var.agent_count
-        vm_size         = "Standard_DS1_v2"
+        vm_size         = "Standard_A2"
     }
 
     service_principal {
@@ -67,3 +67,25 @@ resource "azurerm_kubernetes_cluster" "k8s" {
         Environment = "Development"
     }
 }
+
+resource "azurerm_container_registry" "acr" {
+  name                     = "containerRegistryNerogreen"
+  resource_group_name      = azurerm_resource_group.k8s.name
+  location                 = azurerm_resource_group.k8s.location
+  sku                      = "Basic"
+  admin_enabled            = true
+  #georeplication_locations = ["East US", "West Europe"]
+
+  tags = {
+        Environment = "Development"
+    }
+}
+
+/*
+resource "azurerm_role_assignment" "acrpull_role" {
+  scope                            = azurerm_resource_group.k8s.name
+  role_definition_name             = "AcrPull"
+  principal_id                     = azuread_service_principal.server.id
+  skip_service_principal_aad_check = true
+}
+*/
